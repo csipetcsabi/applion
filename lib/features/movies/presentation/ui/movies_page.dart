@@ -1,3 +1,5 @@
+import 'package:applion/app/app_constants.dart';
+import 'package:applion/features/movies/domain/entity/Movie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,12 +27,8 @@ class MoviesPage extends StatelessWidget {
                 itemCount: state.movies.length,
                 itemBuilder: (context, index) {
                   final movie = state.movies[index];
-                  return ListTile(
-                    title: Text(movie.title),
-                    onTap: () {
-                      context.read<MoviesBloc>().add(MoviesEventFetch());
-                    },
-                  );
+                  return createListItems(movie, context);
+
                 },
               );
             } else if (state is MoviesStateError) {
@@ -41,5 +39,102 @@ class MoviesPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget createListItems(Movie movie, BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(10),
+      elevation: 5,
+      child: InkWell(
+        onTap: () {
+          context.read<MoviesBloc>().add(MoviesEventFetch());
+
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 100,
+                  height: 150,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      getPosterPath(movie),
+                      width: 100,
+                    ),
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: SizedBox(
+                    //  width: 200,
+                      child: Text(
+                        movie.title,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.star, color: Colors.yellow),
+                      Text(movie.voteAverage.toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.yellow,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Icon(Icons.heart_broken_outlined, color: Colors.red),
+                      Text(movie.voteCount.toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: SizedBox(
+                      child: Text(
+                        movie.overview,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: TextStyle(
+
+                          fontSize: 14,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+
+  }
+
+  String getPosterPath(Movie movie) {
+    return "https://image.tmdb.org/t/p/w500${movie.posterPath}";
   }
 }
