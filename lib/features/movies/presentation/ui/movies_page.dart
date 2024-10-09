@@ -4,6 +4,7 @@ import 'package:applion/features/movies/presentation/ui/movie_detals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../util/movie_util.dart';
 import '../bloc/movies_bloc.dart';
 import '../bloc/movies_event.dart';
 import '../bloc/movies_state.dart';
@@ -101,7 +102,7 @@ class MoviesPage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      getPosterPath(movie),
+                      MovieUtil.getPosterPath(movie),
                       width: 100,
                     ),
                   ),
@@ -173,7 +174,5 @@ class MoviesPage extends StatelessWidget {
     );
   }
 
-  String getPosterPath(Movie movie) {
-    return "https://image.tmdb.org/t/p/w500${movie.posterPath}";
-  }
+
 }
