@@ -1,5 +1,5 @@
 import '../entity/Movie.dart';
 
 abstract class MovieRepository {
-  Future<List<Movie>> getMovies();
+  Future<List<Movie>> getMovies({String? query});
 }

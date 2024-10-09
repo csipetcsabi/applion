@@ -1,5 +1,6 @@
 import 'package:applion/app/app_constants.dart';
 import 'package:applion/features/movies/domain/entity/Movie.dart';
+import 'package:applion/features/movies/presentation/ui/movie_detals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,26 +19,64 @@ class MoviesPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => MoviesBloc()..add(MoviesEventFetch()),
-        child: BlocBuilder<MoviesBloc, MoviesState>(
-          builder: (context, state) {
-            if (state is MoviesStateLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is MoviesStateLoaded) {
-              return ListView.builder(
+        child:
+        //listOfMovies(context),
+        Column(
+          children: [
+            searchField(context),
+            listOfMovies(context),
+          ],
+        )
+      ),
+    );
+  }
+
+  Widget searchField(context) {
+    return Builder(
+      builder: (context) {
+        return SizedBox(
+          height: 60,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: TextEditingController(),
+              decoration: const InputDecoration(
+                labelText: 'Search',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (query) {
+                context.read<MoviesBloc>().add(MoviesEventFetch(query: query));
+              },
+            ),
+          ),
+        );
+      }
+    );
+  }
+
+  Widget listOfMovies(context) {
+    return BlocBuilder<MoviesBloc, MoviesState>(
+      builder: (context, state) {
+        if (state is MoviesStateLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is MoviesStateLoaded) {
+          return Column(
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
                 itemCount: state.movies.length,
                 itemBuilder: (context, index) {
                   final movie = state.movies[index];
                   return createListItems(movie, context);
-
                 },
-              );
-            } else if (state is MoviesStateError) {
-              return Center(child: Text(state.message));
-            }
-            return const Center(child: Text('Error'));
-          },
-        ),
-      ),
+              ),
+            ],
+          );
+        } else if (state is MoviesStateError) {
+          return Center(child: Text(state.message));
+        }
+        return const Center(child: Text('Error'));
+      },
     );
   }
 
@@ -47,8 +86,8 @@ class MoviesPage extends StatelessWidget {
       elevation: 5,
       child: InkWell(
         onTap: () {
-          context.read<MoviesBloc>().add(MoviesEventFetch());
-
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MovieDetails( movie)));
+          //context.read<MoviesBloc>().add(MoviesEventFetch());
         },
         child: Padding(
           padding: const EdgeInsets.all(15),
@@ -74,9 +113,9 @@ class MoviesPage extends StatelessWidget {
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 200),
                     child: SizedBox(
-                    //  width: 200,
+                      //  width: 200,
                       child: Text(
-                        movie.title,
+                        movie.title ?? '-',
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 18,
@@ -89,7 +128,8 @@ class MoviesPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Icons.star, color: Colors.yellow),
-                      Text(movie.voteAverage.toString(),
+                      Text(
+                        movie.voteAverage.toString(),
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.yellow,
@@ -98,8 +138,10 @@ class MoviesPage extends StatelessWidget {
                       const SizedBox(
                         width: 10,
                       ),
-                      const Icon(Icons.heart_broken_outlined, color: Colors.red),
-                      Text(movie.voteCount.toString(),
+                      const Icon(Icons.heart_broken_outlined,
+                          color: Colors.red),
+                      Text(
+                        movie.voteCount.toString(),
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.red,
@@ -112,11 +154,10 @@ class MoviesPage extends StatelessWidget {
                     constraints: BoxConstraints(maxWidth: 200),
                     child: SizedBox(
                       child: Text(
-                        movie.overview,
+                        movie.overview ?? '-',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style: TextStyle(
-
                           fontSize: 14,
                           color: Colors.grey[700],
                         ),
@@ -130,8 +171,6 @@ class MoviesPage extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 
   String getPosterPath(Movie movie) {

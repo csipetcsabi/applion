@@ -7,19 +7,17 @@ import 'package:http/http.dart' as http;
 
 class MovieRepositoryImpl implements MovieRepository {
   @override
-  Future<List<Movie>> getMovies() async {
-    return await fetchTMDBMovies();
+  Future<List<Movie>> getMovies({String? query}) async {
+    return await fetchTMDBMovies(query: query);
 
-    /*   await Future.delayed(const Duration(seconds: 2));
-    return [
-      Movie(id: 1, title: 'Movie 1', details: 'Details1'),
-      Movie(id: 2, title: 'Movie 2', details: 'Details2'),
-    ];*/
+
   }
 
-  Future<List<Movie>> fetchTMDBMovies() async {
+  Future<List<Movie>> fetchTMDBMovies({String? query}) async {
+
+    String queryParam = query != null ? '&query=$query' : '';
     final response = await http.get(Uri.parse(
-        '${AppConstants.baseUrl}/search/movie?api_key=${AppConstants.apiKey}&query=avenger'));
+        '${AppConstants.baseUrl}/search/movie?api_key=${AppConstants.apiKey}$queryParam'));
 
     if (response.statusCode == 200) {
       final List<dynamic> results = json.decode(response.body)['results'];

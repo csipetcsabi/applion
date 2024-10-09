@@ -12,11 +12,13 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     on<MoviesEventFetch>((event, emit) async {
       emit(MoviesStateLoading());
       try {
-        final movies = await movieRepository.getMovies();
+        final movies = await movieRepository.getMovies(query: event.query);
         emit(MoviesStateLoaded(movies));
       } catch (e) {
         emit(MoviesStateError('Errror fetching movies'));
       }
     });
   }
+
+
 }
