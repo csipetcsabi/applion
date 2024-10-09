@@ -25,7 +25,7 @@ class MoviesPage extends StatelessWidget {
         Column(
           children: [
             searchField(context),
-            listOfMovies(context),
+             Expanded(child: listOfMovies(context)),
           ],
         )
       ),
@@ -61,17 +61,13 @@ class MoviesPage extends StatelessWidget {
         if (state is MoviesStateLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is MoviesStateLoaded) {
-          return Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.movies.length,
-                itemBuilder: (context, index) {
-                  final movie = state.movies[index];
-                  return createListItems(movie, context);
-                },
-              ),
-            ],
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: state.movies.length,
+            itemBuilder: (context, index) {
+              final movie = state.movies[index];
+              return createListItems(movie, context);
+            },
           );
         } else if (state is MoviesStateError) {
           return Center(child: Text(state.message));
