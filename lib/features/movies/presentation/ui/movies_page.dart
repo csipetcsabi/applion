@@ -18,47 +18,42 @@ class MoviesPage extends StatelessWidget {
       appBar: AppBar(
         title: const Center(child: Text('Movies')),
       ),
-      body: BlocProvider(
-        create: (context) => MoviesBloc()..add(MoviesEventFetch()),
-        child:
-        //listOfMovies(context),
-        Column(
-          children: [
-            searchField(context),
-             Expanded(child: listOfMovies(context)),
-          ],
-        )
+      body: Column(
+        children: [
+          searchField(context),
+          Expanded(child: listOfMovies(context)),
+        ],
       ),
     );
   }
 
   Widget searchField(context) {
-    return Builder(
-      builder: (context) {
-        return SizedBox(
-          height: 60,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: TextEditingController(),
-              decoration: const InputDecoration(
-                labelText: 'Search',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (query) {
-                context.read<MoviesBloc>().add(MoviesEventFetch(query: query));
-              },
+    return Builder(builder: (context) {
+      return SizedBox(
+        height: 60,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            controller: TextEditingController(),
+            decoration: const InputDecoration(
+              labelText: 'Search',
+              border: OutlineInputBorder(),
             ),
+            onChanged: (query) {
+              context.read<MoviesBloc>().add(MoviesEventFetch(query: query));
+            },
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 
   Widget listOfMovies(context) {
     return BlocBuilder<MoviesBloc, MoviesState>(
       builder: (context, state) {
-        if (state is MoviesStateLoading) {
+        if (state is MoviesStateInitial) {
+          return const Center(child: Text('Search for movies'));
+        } else if (state is MoviesStateLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is MoviesStateLoaded) {
           return ListView.builder(
@@ -83,7 +78,8 @@ class MoviesPage extends StatelessWidget {
       elevation: 5,
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MovieDetails( movie)));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => MovieDetails(movie)));
           //context.read<MoviesBloc>().add(MoviesEventFetch());
         },
         child: Padding(
@@ -169,6 +165,4 @@ class MoviesPage extends StatelessWidget {
       ),
     );
   }
-
-
 }

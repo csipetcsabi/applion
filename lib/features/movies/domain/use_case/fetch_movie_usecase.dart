@@ -6,7 +6,6 @@ class FetchMoviesUseCase   {
 
   FetchMoviesUseCase(this.movieRepository);
 
-  @override
   Future<List<Movie>> call({String? query}) {
     return movieRepository.getMovies(query: query);
   }
