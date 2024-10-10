@@ -1,4 +1,4 @@
-import 'package:applion/features/movies/domain/entity/Movie.dart';
+import 'package:applion/features/movies/domain/entity/movie.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../util/movie_util.dart';
@@ -6,7 +6,7 @@ import '../../../../util/movie_util.dart';
 class MovieDetails extends StatelessWidget {
   Movie movie;
 
-  MovieDetails(this.movie);
+  MovieDetails(this.movie, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class MovieDetails extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },

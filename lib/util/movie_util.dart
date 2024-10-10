@@ -1,4 +1,4 @@
-import '../features/movies/domain/entity/Movie.dart';
+import '../features/movies/domain/entity/movie.dart';
 
 class MovieUtil{
 

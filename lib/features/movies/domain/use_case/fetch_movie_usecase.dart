@@ -1,4 +1,4 @@
-import '../entity/Movie.dart';
+import '../entity/movie.dart';
 import '../repository/movie_repository.dart';
 
 class FetchMoviesUseCase   {

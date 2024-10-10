@@ -1,5 +1,4 @@
-import 'package:applion/app/app_constants.dart';
-import 'package:applion/features/movies/domain/entity/Movie.dart';
+import 'package:applion/features/movies/domain/entity/movie.dart';
 import 'package:applion/features/movies/presentation/ui/movie_detals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,7 +87,7 @@ class MoviesPage extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
+                child: SizedBox(
                   width: 100,
                   height: 150,
                   child: ClipRRect(
@@ -104,7 +103,7 @@ class MoviesPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 200),
+                    constraints: const BoxConstraints(maxWidth: 200),
                     child: SizedBox(
                       //  width: 200,
                       child: Text(
@@ -144,7 +143,7 @@ class MoviesPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 200),
+                    constraints: const BoxConstraints(maxWidth: 200),
                     child: SizedBox(
                       child: Text(
                         movie.overview ?? '-',

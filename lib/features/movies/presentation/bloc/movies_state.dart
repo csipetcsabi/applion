@@ -1,4 +1,4 @@
-import '../../domain/entity/Movie.dart';
+import '../../domain/entity/movie.dart';
 
 sealed class MoviesState {}
 

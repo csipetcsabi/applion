@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../../app/app_constants.dart';
-import '../../domain/entity/Movie.dart';
+import '../../domain/entity/movie.dart';
 
 class RemoteMovieService {
 

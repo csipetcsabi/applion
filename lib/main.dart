@@ -2,10 +2,12 @@ import 'package:applion/features/movies/presentation/ui/movies_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'config/hive.dart';
 import 'features/movies/presentation/bloc/movies_bloc.dart';
 import 'injection/injection.dart';
 
-void main() {
+Future<void> main() async {
+  await hiveSetup();
   getItSetup();
   runApp(const MyApp());
 }
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (_) => getIt<MoviesBloc>(),
-        child: MoviesPage(),
+        child: const MoviesPage(),
       ),
     );
   }
