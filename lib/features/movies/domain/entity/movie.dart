@@ -20,6 +20,10 @@ class Movie {
   final String? originalLanguage;
   @HiveField(7)
   final double? voteAverage;
+  @HiveField(8)
+  final String? releaseDate;
+  @HiveField(9)
+  final List<int> genreIds;
 
   Movie({
     required this.id,
@@ -30,5 +34,7 @@ class Movie {
     required this.voteCount,
     required this.originalLanguage,
     required this.voteAverage,
+    required this.releaseDate,
+    required this.genreIds,
   });
 }

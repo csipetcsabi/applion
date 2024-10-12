@@ -35,8 +35,15 @@ class MoviesPage extends StatelessWidget {
           child: TextField(
             controller: TextEditingController(),
             decoration: const InputDecoration(
+              filled: true,
+              prefixIcon: Icon(Icons.search),
+              fillColor: Color(0xFFF4F4F4),
               labelText: 'Search',
-              border: OutlineInputBorder(),
+              labelStyle: TextStyle(color: Color(0x00b2b2b2)),
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
             ),
             onChanged: (query) {
               context.read<MoviesBloc>().add(MoviesEventFetch(query: query));
@@ -92,10 +99,7 @@ class MoviesPage extends StatelessWidget {
                   height: 150,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      MovieUtil.getPosterPath(movie),
-                      width: 100,
-                    ),
+                    child: MovieUtil.getNetworkImage(movie),
                   ),
                 ),
               ),
