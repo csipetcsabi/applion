@@ -1,41 +1,19 @@
-// lib/data/datasources/remote/movie_service.dart
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
 
-import '../../../../app/app_constants.dart';
 import '../../domain/entity/movie.dart';
 
-class RemoteMovieService {
-  Future<List<Movie>> fetchTMDBMovies({String? query}) async {
-    String queryParam = query != null ? '&query=$query' : '';
-    final response = await http.get(Uri.parse(
-        '${AppConstants.baseUrl}/search/movie?api_key=${AppConstants.apiKey}$queryParam'));
+part 'remote_movie_service.g.dart';
 
-    if (response.statusCode == 200) {
-      final List<dynamic> results = json.decode(response.body)['results'];
-      return results
-          .map((movie) {
-        var genreList = movie['genre_ids'] as List?;
-        List<int> genreIds = [];
-        if (genreList != null) {
-          genreIds = genreList.map((item) => item as int).toList() ;
-        }
-            return Movie(
-                id: movie['id'],
-                title: movie['title'],
-                overview: movie['overview'],
-                posterPath: movie['poster_path'],
-                originalLanguage: movie['original_language'],
-                popularity: movie['popularity'].toDouble(),
-                voteCount: movie['vote_count'],
-                voteAverage: movie['vote_average'].toDouble(),
-                releaseDate: movie['release_date'],
-                genreIds:genreIds,
-              );
-          })
-          .toList();
-    } else {
-      throw Exception('Failed to load movies');
-    }
-  }
+@RestApi(baseUrl: "https://api.themoviedb.org/3/")
+abstract class RemoteMovieService {
+  factory RemoteMovieService(Dio dio, {String baseUrl}) = _RemoteMovieService;
+
+  @GET("/search/movie")
+  Future<List<Movie>> searchMovies(
+    @Query("api_key") String apiKey,
+    @Query("query") String query,
+    @Query("page") int? page,
+    @Query("language") String? language,
+  );
 }

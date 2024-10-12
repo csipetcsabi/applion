@@ -6,7 +6,7 @@ class FetchMoviesUseCase   {
 
   FetchMoviesUseCase(this.movieRepository);
 
-  Future<List<Movie>> call({String? query}) {
+  Future<List<Movie>> call({required String query}) {
     return movieRepository.getMovies(query: query);
   }
 }

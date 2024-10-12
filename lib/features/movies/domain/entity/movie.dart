@@ -1,7 +1,10 @@
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 
 part 'movie.g.dart';
 
+@JsonSerializable()
 @HiveType(typeId: 0)
 class Movie {
   @HiveField(0)
@@ -37,4 +40,8 @@ class Movie {
     required this.releaseDate,
     required this.genreIds,
   });
+
+  factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
+  Map<String, dynamic> toJson() => _$MovieToJson(this);
+
 }

@@ -1,7 +1,7 @@
 sealed class MoviesEvent {}
 
 class MoviesEventFetch extends MoviesEvent {
-  String? query;
+  String query;
 
-  MoviesEventFetch({this.query});
+  MoviesEventFetch({required this.query});
 }
