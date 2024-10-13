@@ -1,6 +1,8 @@
 
+import 'package:applion/app/app_language.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../../config/hive_manager.dart';
 import '../../domain/entity/movie.dart';
 import '../../domain/repository/movie_repository.dart';
 
@@ -15,10 +17,15 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<List<Movie>> getMovies({required String query }) async {
+
+
+
     try {
-      final movies = await remoteMovieService.searchMovies( apiKey,query, 1, 'en-US');
-      await saveArticles(movies);
-      return movies;
+      AppLanguage language = preferencesBox.get(PrefConstants.language, defaultValue: AppLanguage.en);
+
+      final result = await remoteMovieService.searchMovies( apiKey,query, 1, language.name);
+      await saveArticles(result.results);
+      return result.results;
     } catch (e) {
       return movieBox.values.toList();
     }

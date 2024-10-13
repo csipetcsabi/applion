@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'movie.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename:FieldRename.snake)
 @HiveType(typeId: 0)
 class Movie {
   @HiveField(0)

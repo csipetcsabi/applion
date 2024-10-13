@@ -4,7 +4,7 @@ import 'package:applion/features/movies/domain/use_case/fetch_movie_usecase.dart
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
-import '../config/hive.dart';
+import '../config/hive_manager.dart';
 import '../features/movies/data/data_source/remote_movie_service.dart';
 import '../features/movies/domain/repository/movie_repository.dart';
 import '../features/movies/presentation/bloc/movies_bloc.dart';

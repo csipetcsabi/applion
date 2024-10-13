@@ -1,7 +1,7 @@
+import 'package:applion/features/movies/domain/entity/result.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../domain/entity/movie.dart';
 
 part 'remote_movie_service.g.dart';
 
@@ -10,7 +10,7 @@ abstract class RemoteMovieService {
   factory RemoteMovieService(Dio dio, {String baseUrl}) = _RemoteMovieService;
 
   @GET("/search/movie")
-  Future<List<Movie>> searchMovies(
+  Future<Result> searchMovies(
     @Query("api_key") String apiKey,
     @Query("query") String query,
     @Query("page") int? page,

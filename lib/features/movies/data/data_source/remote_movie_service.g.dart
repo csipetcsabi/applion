@@ -24,7 +24,7 @@ class _RemoteMovieService implements RemoteMovieService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<Movie>> searchMovies(
+  Future<Result> searchMovies(
     String apiKey,
     String query,
     int? page,
@@ -40,7 +40,7 @@ class _RemoteMovieService implements RemoteMovieService {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Movie>>(Options(
+    final _options = _setStreamType<Result>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -56,12 +56,10 @@ class _RemoteMovieService implements RemoteMovieService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Movie> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Result _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Movie.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = Result.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

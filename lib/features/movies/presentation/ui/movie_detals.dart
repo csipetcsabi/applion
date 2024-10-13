@@ -93,9 +93,9 @@ class MovieDetails extends StatelessWidget {
                 const SizedBox(height: 16),
                 getChipsRow(movie),
                 const SizedBox(height: 16),
-                const Text(
-                  "When a kid accidentally triggers the universe's most lethal hunters' return to Earth, only a ragtag crew of ex-soldiers and a disgruntled female scientist can prevent the end of the human race.",
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  movie.overview ?? "",
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
@@ -107,8 +107,7 @@ class MovieDetails extends StatelessWidget {
 
   Widget getChipsRow(Movie movie) {
     return Row(
-      children:
-          movie.genreIds.map((item) => getChip(item.toString())).toList(),
+      children: movie.genreIds.map((item) => getChip(item.toString())).toList(),
     );
   }
 
